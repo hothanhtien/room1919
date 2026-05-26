@@ -24,3 +24,27 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+  
+  nginx:
+    image: nginx:alpine
+    container_name: finance1919-nginx
+    ports:
+      - "1919:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+  
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    depends_on:
+      - nginx
+    volumes:
+      - ./cloudflared:/etc/cloudflared
+    command: tunnel run
+    networks:
+      - exposed-net
