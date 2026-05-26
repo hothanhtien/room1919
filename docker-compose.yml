@@ -48,3 +48,9 @@ services:
     command: tunnel run
     networks:
       - exposed-net
+
+networks:
+  internal:
+    driver: bridge
+  exposed-net:
+    driver: bridge
