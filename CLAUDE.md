@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 # Project
 Finance Management Tool - Room 1919
 
@@ -12,148 +14,96 @@ Frontend:
 - React
 - TypeScript
 - TailwindCSS
-- Shadcn UI
 - Axios
 - Zustand
 
 Backend:
-- JavaScript
+- Node.js
+- Express
 - TypeORM
 - PostgreSQL
 - JWT Authentication
-- bcrypt
-
-Database:
-- PostgreSQL
-- Database host sẵn trên server
-- Không tạo PostgreSQL container mới
-
-Infrastructure:
-- Docker
-- Docker Compose
-- Nginx
+- bcryptjs
 
 ---
 
-# Architecture
+## Architecture
 
+```
 Browser
 ↓
-Frontend (Vite Docker)
+Frontend (Vite Docker) - Port 3000
 ↓
-Backend (NestJS Docker)
+Backend (Express Docker) - Port 8080
 ↓
 Remote PostgreSQL Server
+```
 
 ---
 
-# Database
+## Database
 
 PostgreSQL đã tồn tại trên server.
 
-Database:
-
-```txt
-finance1919
-```
-
-Connection:
-
-```env
-DATABASE_URL=postgres://postgres:1@100.98.146.87:5432/finance1919
-```
+Database: finance1919
+Connection: postgres://postgres:1@100.98.146.87:5432/finance1919
 
 Rules:
-
 - Không tạo PostgreSQL mới
-- Không thêm postgres vào docker-compose
-- Không dùng SQLite
-- Không dùng MySQL
-- Không dùng localhost
 - Chỉ dùng DATABASE_URL ở trên
 
 ---
 
-# Folder
+## Folder
 
-```txt
+```
 finance1919/
-
-frontend/
-backend/
-
-docker-compose.yml
-.env
-CLAUDE.md
+├── server/           # Express backend
+├── client/           # React frontend
+├── docker-compose.yml
+└── .env
 ```
 
 ---
 
-# Backend ENV
-
-```env
-PORT=8080
-
-JWT_SECRET=finance1919_secret
-
-DATABASE_URL=postgres://postgres:1@100.98.146.87:5432/finance1919
-```
-
-
----
-
-# Modules
-
-auth
-
-users
-
-categories
-
-transactions
-
-dashboard
-
-reports
-
----
-
-# Roles
-
-admin
-
-staff
-
-viewer
-
----
-
-# Commands
-
-Run:
+## Commands
 
 ```bash
+# Build and run
 docker compose up -d --build
-```
 
-Logs:
-
-```bash
+# View logs
 docker compose logs -f
-```
 
-Stop:
-
-```bash
+# Stop
 docker compose down
-```
 
-Migration:
+# Development (without docker)
+# Backend
+cd server && npm install && npm run dev
 
-```bash
-docker exec -it finance1919-backend npx prisma migrate deploy
+# Frontend
+cd client && npm install && npm run dev
 ```
 
 ---
 
-Mọi code generate phải tuân thủ chính xác file này.
+## API Endpoints
+
+### Auth
+- POST /api/auth/register
+- POST /api/auth/login
+- GET /api/auth/me
+
+### Bills
+- GET /api/bills
+- POST /api/bills
+- GET /api/bills/:id
+- POST /api/bills/:id/tick
+
+---
+
+## Modules
+
+- Auth (register, login, JWT)
+- Bills (CRUD, tick/untick)
