@@ -36,6 +36,9 @@ services:
       - frontend
       - backend
     restart: unless-stopped
+    networks:
+      - internal
+      - exposed-net
   
   cloudflared:
     image: cloudflare/cloudflared:latest
