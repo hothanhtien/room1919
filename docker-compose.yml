@@ -13,6 +13,8 @@ services:
       - JWT_SECRET=finance1919_secret_key_2026
       - DATABASE_URL=postgres://postgres:1@100.98.146.87:5432/finance1919
     restart: unless-stopped
+    networks:
+      - internal
 
   frontend:
     build:
@@ -24,6 +26,8 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+    networks:
+      - internal
   
   nginx:
     image: nginx:alpine
