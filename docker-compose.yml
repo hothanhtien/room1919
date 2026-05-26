@@ -39,7 +39,7 @@ services:
   
   cloudflared:
     image: cloudflare/cloudflared:latest
-    container_name: cloudflared
+    container_name: finance1919-cloudflared
     restart: unless-stopped
     depends_on:
       - nginx
@@ -47,10 +47,11 @@ services:
       - ./cloudflared:/etc/cloudflared
     command: tunnel run
     networks:
-      - room1919_exposed-net
+      - exposed-net
 
 networks:
   internal:
     driver: bridge
+
   exposed-net:
     driver: bridge
