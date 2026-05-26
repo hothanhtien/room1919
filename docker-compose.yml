@@ -47,7 +47,7 @@ services:
       - ./cloudflared:/etc/cloudflared
     command: tunnel run
     networks:
-      - exposed-net
+      - room1919_exposed-net
 
 networks:
   internal:
