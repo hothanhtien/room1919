@@ -19,18 +19,24 @@ router.get('/', async (req: AuthRequest, res: Response) => {
       order: { created_at: 'DESC' },
     });
 
-    const result = bills.map((bill) => ({
-      id: bill.id,
-      title: bill.title,
-      amount: parseFloat(bill.amount as any),
-      creator: { id: bill.creator.id, name: bill.creator.name },
-      created_at: bill.created_at,
-      ticks: bill.ticks.map((tick) => ({
-        user_id: tick.user_id,
-        user_name: tick.user.name,
-        ticked_at: tick.ticked_at,
-      })),
-    }));
+    const users = await userRepo.find();
+
+    const result = bills.map((bill) => {
+      const tickedUserIds = bill.ticks.map((t) => t.user_id);
+      return {
+        id: bill.id,
+        title: bill.title,
+        amount: parseFloat(bill.amount as any),
+        creator: { id: bill.creator.id, name: bill.creator.name },
+        created_at: bill.created_at,
+        users: users.map((u) => ({
+          id: u.id,
+          name: u.name,
+          ticked: tickedUserIds.includes(u.id),
+          ticked_at: bill.ticks.find((t) => t.user_id === u.id)?.ticked_at,
+        })),
+      };
+    });
 
     res.json({ bills: result });
   } catch (error) {

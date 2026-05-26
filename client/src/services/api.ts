@@ -24,8 +24,7 @@ export interface Bill {
   amount: number;
   creator: { id: string; name: string };
   created_at: string;
-  ticks: Array<{ user_id: string; user_name: string; ticked_at: string }>;
-  users?: Array<{ id: string; name: string; ticked: boolean; ticked_at?: string }>;
+  users: Array<{ id: string; name: string; ticked: boolean; ticked_at?: string }>;
 }
 
 export const authApi = {
